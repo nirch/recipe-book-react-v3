@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import RecipeNavbar from '../components/RecipeNavbar';
 import { Redirect } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
+import { Container, Col, Row } from 'react-bootstrap';
+import RecipeCard from '../components/RecipeCard';
 
 class RecipesPage extends Component {
 
@@ -21,15 +22,19 @@ class RecipesPage extends Component {
         const myRecipes = recipes.filter(recipe => recipe.userId === activeUser.id);
 
         // Map my recipes to UI
-        const myRecipesUI = myRecipes.map(recipe => <p key={recipe.id}>{recipe.name}</p>)
+        const myRecipesUI = myRecipes.map(recipe => <Col lg={3} md={4} sm={6}>
+                                                        <RecipeCard recipe={recipe}/>
+                                                    </Col> )
 
         return (
             <div className="p-recipes">
+                <RecipeNavbar activeUser={activeUser} handleLogout={handleLogout} />
                 <Container>
-                    <RecipeNavbar activeUser={activeUser} handleLogout={handleLogout} />
                     <div>
                         <h1>{activeUser.fname}'s Recipes</h1>
-                        {myRecipesUI}
+                        <Row>
+                            {myRecipesUI}
+                        </Row>
                     </div>
                 </Container>
             </div>
