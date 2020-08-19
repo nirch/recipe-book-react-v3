@@ -13,13 +13,13 @@ class RecipeNavbar extends Component {
 
     render() {
 
-        const { activeUser } = this.props;
+        const { activeUser, handleLogout } = this.props;
 
         // rendering the menu items depending on whether we have an active user or not
         const recipesMenuItem = activeUser ? <Nav.Link href="#/recipes">Recipes</Nav.Link> : null;
         const loginMenuItem = !activeUser ? <Nav.Link href="#/login">Login</Nav.Link> : null;
         const signupMenuItem = !activeUser ? <Nav.Link href="#/signup">Signup</Nav.Link> : null;
-        const logoutMenuItem = activeUser ? <Nav.Link href="#">Logout</Nav.Link> : null;
+        const logoutMenuItem = activeUser ? <Nav.Link onClick={() => {handleLogout()}} href="#">Logout</Nav.Link> : null;
 
         return (
             <Navbar bg="light" expand="lg">

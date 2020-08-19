@@ -9,11 +9,11 @@ class RecipesPage extends Component {
     }
 
     render() {
-        const { activeUser } = this.props;
+        const { activeUser, handleLogout } = this.props;
 
         return (
             <div>
-                <RecipeNavbar activeUser={activeUser}/>
+                <RecipeNavbar activeUser={activeUser} handleLogout={handleLogout}/>
                 <div>
                     Recipes Page
                 </div>

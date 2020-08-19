@@ -17,15 +17,22 @@ class App extends React.Component {
     super(props);
     
     this.state = {
-      activeUser: null
-      // activeUser: {
-      //   id: 1234,
-      //   fname: "John",
-      //   lname: "Doe"
-      // }
+      // activeUser: null
+      activeUser: {
+        id: 1234,
+        fname: "John",
+        lname: "Doe"
+      }
     }
+
+    this.handleLogout = this.handleLogout.bind(this);
   }
   
+  handleLogout() {
+    this.setState({
+      activeUser: null
+    })
+  }
 
 
   render() {
@@ -35,13 +42,13 @@ class App extends React.Component {
       <HashRouter>
         <Switch>
           <Route exact path="/">
-            <HomePage activeUser={activeUser}/>
+            <HomePage activeUser={activeUser} handleLogout={this.handleLogout}/>
           </Route>
           <Route exact path="/login">
             <LoginPage activeUser={activeUser}/>
           </Route>
           <Route exact path="/recipes">
-            <RecipesPage activeUser={activeUser}/>
+            <RecipesPage activeUser={activeUser} handleLogout={this.handleLogout}/>
           </Route>
         </Switch>
       </HashRouter>
