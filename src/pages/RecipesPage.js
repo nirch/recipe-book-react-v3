@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import RecipeNavbar from '../components/RecipeNavbar';
 import { Redirect } from 'react-router-dom';
-import { Container, Col, Row } from 'react-bootstrap';
+import { Container, Col, Row, Button } from 'react-bootstrap';
 import RecipeCard from '../components/RecipeCard';
+import './RecipePage.css'
 
 class RecipesPage extends Component {
 
@@ -31,7 +32,10 @@ class RecipesPage extends Component {
                 <RecipeNavbar activeUser={activeUser} handleLogout={handleLogout} />
                 <Container>
                     <div>
-                        <h1>{activeUser.fname}'s Recipes</h1>
+                        <div className="heading">
+                            <h1>{activeUser.fname}'s Recipes</h1>
+                            <Button>New Recipe</Button>
+                        </div>
                         <Row>
                             {myRecipesUI}
                         </Row>
