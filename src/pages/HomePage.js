@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Container } from 'react-bootstrap';
 
 class HomePage extends Component {
 
@@ -6,7 +7,9 @@ class HomePage extends Component {
     render() {
         return (
             <div>
-                Home Page
+                <Container>
+                    Home Page
+                </Container>
             </div>
         );
     }
