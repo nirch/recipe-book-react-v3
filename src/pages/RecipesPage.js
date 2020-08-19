@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import RecipeNavbar from '../components/RecipeNavbar';
 import { Redirect } from 'react-router-dom';
-import { Container, Col, Row, Button, Modal } from 'react-bootstrap';
+import { Container, Col, Row, Button, Modal, Form } from 'react-bootstrap';
 import RecipeCard from '../components/RecipeCard';
 import './RecipePage.css'
 
@@ -11,10 +11,15 @@ class RecipesPage extends Component {
         super(props);
 
         this.state = {
-            showNewRecipeModal: false
+            showNewRecipeModal: false,
+            nameInput: "",
+            descInput: "",
+            imgInput: ""
         }
 
         this.handleModalClose = this.handleModalClose.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+
     }
 
     handleModalClose() {
@@ -23,9 +28,15 @@ class RecipesPage extends Component {
         })
     }
 
+    handleInputChange(event) {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
+    }
+
     render() {
         const { activeUser, handleLogout, recipes } = this.props;
-        const { showNewRecipeModal } = this.state;
+        const { showNewRecipeModal, nameInput, descInput, imgInput } = this.state;
 
         if (!activeUser) {
             return <Redirect to="/" />
@@ -46,7 +57,7 @@ class RecipesPage extends Component {
                     <div>
                         <div className="heading">
                             <h1>{activeUser.fname}'s Recipes</h1>
-                            <Button onClick={() => this.setState({showNewRecipeModal: true})}>New Recipe</Button>
+                            <Button onClick={() => this.setState({ showNewRecipeModal: true })}>New Recipe</Button>
                         </div>
                         <Row>
                             {myRecipesUI}
@@ -55,17 +66,46 @@ class RecipesPage extends Component {
                 </Container>
 
 
-                <Modal show={showNewRecipeModal} onHide={this.handleModalClose}>
+                <Modal show={showNewRecipeModal} onHide={this.handleModalClose} size="lg">
                     <Modal.Header closeButton>
-                        <Modal.Title>Modal heading</Modal.Title>
+                        <Modal.Title>New Recipe</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                    <Modal.Body>
+                        <Form>
+                            <Form.Group as={Row} controlId="name">
+                                <Form.Label column sm={2}>
+                                    Name
+                                </Form.Label>
+                                <Col sm={10}>
+                                    {/* the value and name needs to be the same if you want to use a single function for onchange for all inputs */}
+                                    <Form.Control type="text" value={nameInput} name="nameInput" onChange={this.handleInputChange}  />
+                                </Col>
+                            </Form.Group>
+                            <Form.Group as={Row} controlId="desc">
+                                <Form.Label column sm={2}>
+                                    Description
+                                </Form.Label>
+                                <Col sm={10}>
+                                    <Form.Control type="text" value={descInput} name="descInput" onChange={this.handleInputChange}  />
+                                </Col>
+                            </Form.Group>
+                            <Form.Group as={Row} controlId="img">
+                                <Form.Label column sm={2}>
+                                    Image URL
+                                </Form.Label>
+                                <Col sm={10}>
+                                    <Form.Control type="text" value={imgInput} name="imgInput" onChange={this.handleInputChange}  />
+                                </Col>
+                            </Form.Group>
+                        </Form>
+
+                    </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={this.handleModalClose}>
-                            Close
+                            Cancel
                         </Button>
                         <Button variant="primary" onClick={this.handleModalClose}>
-                            Save Changes
+                            Create Recipe
                         </Button>
                     </Modal.Footer>
                 </Modal>
