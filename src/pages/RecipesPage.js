@@ -19,6 +19,8 @@ class RecipesPage extends Component {
 
         this.handleModalClose = this.handleModalClose.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleCreateRecipe = this.handleCreateRecipe.bind(this);
+
 
     }
 
@@ -34,6 +36,19 @@ class RecipesPage extends Component {
         });
     }
 
+    handleCreateRecipe() {
+        const { nameInput, descInput, imgInput } = this.state;
+        const newRecipe = { 
+            name: nameInput, 
+            desc: descInput, 
+            img: imgInput 
+        };
+        
+        this.props.handleNewRecipe(newRecipe);
+
+        this.handleModalClose();
+    }
+
     render() {
         const { activeUser, handleLogout, recipes } = this.props;
         const { showNewRecipeModal, nameInput, descInput, imgInput } = this.state;
@@ -46,7 +61,7 @@ class RecipesPage extends Component {
         const myRecipes = recipes.filter(recipe => recipe.userId === activeUser.id);
 
         // Map my recipes to UI
-        const myRecipesUI = myRecipes.map(recipe => <Col lg={3} md={4} sm={6}>
+        const myRecipesUI = myRecipes.map(recipe => <Col key={recipe.id} lg={3} md={4} sm={6}>
             <RecipeCard recipe={recipe} />
         </Col>)
 
@@ -104,7 +119,7 @@ class RecipesPage extends Component {
                         <Button variant="secondary" onClick={this.handleModalClose}>
                             Cancel
                         </Button>
-                        <Button variant="primary" onClick={this.handleModalClose}>
+                        <Button variant="primary" onClick={this.handleCreateRecipe}>
                             Create Recipe
                         </Button>
                     </Modal.Footer>

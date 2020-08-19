@@ -30,6 +30,7 @@ class App extends React.Component {
 
     this.handleLogout = this.handleLogout.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+    this.handleNewRecipe = this.handleNewRecipe.bind(this);
 
   }
   
@@ -46,6 +47,12 @@ class App extends React.Component {
     })
   }
 
+  handleNewRecipe(recipe) {
+    console.log(recipe);
+    // this.setState({
+    //   recipes: recipes.concat(recipe);
+    // })
+  }
 
   render() {
     const { activeUser, users, recipes } = this.state;
@@ -60,7 +67,8 @@ class App extends React.Component {
             <LoginPage activeUser={activeUser} users={users} handleLogin={this.handleLogin}/>
           </Route>
           <Route exact path="/recipes">
-            <RecipesPage activeUser={activeUser} recipes={recipes} handleLogout={this.handleLogout}/>
+            <RecipesPage activeUser={activeUser} recipes={recipes} handleLogout={this.handleLogout} 
+              handleNewRecipe={this.handleNewRecipe}/>
           </Route>
         </Switch>
       </HashRouter>
