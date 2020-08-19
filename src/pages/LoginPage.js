@@ -3,7 +3,28 @@ import { Form, Col, Row, Button } from 'react-bootstrap';
 import './LoginPage.css'
 
 class LoginPage extends Component {
+
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            emailInput: "",
+            pwdInput: ""
+        }
+
+        this.login = this.login.bind(this);
+    }
+    
+    login() {
+        const { emailInput, pwdInput } = this.state;
+
+        alert(emailInput + " " + pwdInput);
+    }
+
     render() {
+
+        const { emailInput, pwdInput } = this.state;
+
         return (
             <div className="p-login">
                 <h1>Login to Recipe Book</h1>
@@ -14,7 +35,7 @@ class LoginPage extends Component {
                             Email
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="email" placeholder="Email" />
+                            <Form.Control type="email" placeholder="Email" value={emailInput} onChange={(e) => this.setState({emailInput: e.target.value})}/>
                         </Col>
                     </Form.Group>
 
@@ -23,12 +44,12 @@ class LoginPage extends Component {
                             Password
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="password" placeholder="Password" />
+                            <Form.Control type="password" placeholder="Password" value={pwdInput} onChange={(e) => this.setState({pwdInput: e.target.value})}/>
                         </Col>
                     </Form.Group>
 
                     <Form.Group>
-                            <Button type="submit" block variant="success">Login</Button>
+                            <Button type="button" onClick={this.login} block variant="success">Login</Button>
                     </Form.Group>
                 </Form>
             </div>
