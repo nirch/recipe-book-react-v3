@@ -2,6 +2,15 @@ import React, { Component } from 'react';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
 
 class RecipeNavbar extends Component {
+
+    constructor(props) {
+        super(props);
+        
+        console.log(this.props.activeUser);
+    }
+    
+
+
     render() {
         return (
             <Navbar bg="light" expand="lg">
