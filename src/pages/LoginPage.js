@@ -13,6 +13,8 @@ class LoginPage extends Component {
         }
 
         this.login = this.login.bind(this);
+
+        console.log(this.props.users);
     }
     
     login() {
