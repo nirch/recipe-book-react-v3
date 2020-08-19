@@ -48,10 +48,18 @@ class App extends React.Component {
   }
 
   handleNewRecipe(recipe) {
-    console.log(recipe);
-    // this.setState({
-    //   recipes: recipes.concat(recipe);
-    // })
+
+    const { activeUser, recipes } = this.state
+
+    // Adding to the recipe object usedId and id
+    recipe.userId = activeUser.id;
+
+    // for id I am taking the id of the last recipe in the array and adding 1
+    recipe.id = recipes[recipes.length - 1].id + 1;
+
+    this.setState({
+      recipes: recipes.concat(recipe)
+    })
   }
 
   render() {
