@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Col, Row, Button, Alert } from 'react-bootstrap';
 import './LoginPage.css'
+import { Redirect } from 'react-router-dom';
 
 class LoginPage extends Component {
 
@@ -8,9 +9,10 @@ class LoginPage extends Component {
         super(props);
         
         this.state = {
-            emailInput: "",
-            pwdInput: "",
-            showInvalidCredentials: false
+            emailInput: "john@john.com",
+            pwdInput: "123",
+            showInvalidCredentials: false,
+            redirectToRecipes: false
         }
 
         this.login = this.login.bind(this);
@@ -18,7 +20,7 @@ class LoginPage extends Component {
     
     login() {
         const { emailInput, pwdInput } = this.state;
-        const { users } = this.props;
+        const { users, handleLogin } = this.props;
 
         // Check if the login is valid (if a user with the same 
         // email and pwd was found in the users array)
@@ -26,7 +28,10 @@ class LoginPage extends Component {
 
         if (userFound) {
             // If the login is valid: notify App and redirect to "/recipes"
-            alert("found");
+            handleLogin(userFound);
+            this.setState({
+                redirectToRecipes: true
+            })
 
         } else {
             // If the login is not valid: show an error alert
@@ -38,7 +43,13 @@ class LoginPage extends Component {
 
     render() {
 
-        const { emailInput, pwdInput, showInvalidCredentials } = this.state;
+        const { emailInput, pwdInput, showInvalidCredentials, redirectToRecipes } = this.state;
+
+
+        if (redirectToRecipes) {
+            return <Redirect to="/recipes" />
+        }
+
 
         return (
             <div className="p-login">
