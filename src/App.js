@@ -17,12 +17,12 @@ class App extends React.Component {
     super(props);
     
     this.state = {
-      // activeUser: null
-      activeUser: {
-        id: 1234,
-        fname: "John",
-        lname: "Doe"
-      }
+      activeUser: null
+      // activeUser: {
+      //   id: 1234,
+      //   fname: "John",
+      //   lname: "Doe"
+      // }
     }
   }
   
