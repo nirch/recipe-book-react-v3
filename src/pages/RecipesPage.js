@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import RecipeNavbar from '../components/RecipeNavbar';
+import { Redirect } from 'react-router-dom';
 
 class RecipesPage extends Component {
 
@@ -10,6 +11,11 @@ class RecipesPage extends Component {
 
     render() {
         const { activeUser, handleLogout } = this.props;
+
+        if (!activeUser) {
+            return <Redirect to="/" />
+        }
+
 
         return (
             <div>
