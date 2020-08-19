@@ -1,0 +1,9 @@
+
+.c-recipe-card {
+    height: 100%;
+}
+
+.c-recipe-card > img {
+    height: 250px;
+    object-fit: cover;
+}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Card } from 'react-bootstrap';
+import './RecipeCard.css'
 
 class RecipeCard extends Component {
 
@@ -13,7 +14,7 @@ class RecipeCard extends Component {
         const { recipe } = this.props;
 
         return (
-            <Card>
+            <Card className="c-recipe-card">
                 <Card.Img variant="top" src={recipe.img} />
                 <Card.Body>
                     <Card.Title>{recipe.name}</Card.Title>
