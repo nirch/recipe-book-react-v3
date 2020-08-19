@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import RecipeNavbar from '../components/RecipeNavbar';
 import { Redirect } from 'react-router-dom';
-import { Container, Col, Row, Button, Modal, Form } from 'react-bootstrap';
+import { Container, Col, Row, Button, Modal, Form, Image } from 'react-bootstrap';
 import RecipeCard from '../components/RecipeCard';
 import './RecipePage.css'
 
@@ -112,6 +112,7 @@ class RecipesPage extends Component {
                                     <Form.Control type="text" value={imgInput} name="imgInput" onChange={this.handleInputChange}  />
                                 </Col>
                             </Form.Group>
+                            <Image src={imgInput} className="preview"/>
                         </Form>
 
                     </Modal.Body>
