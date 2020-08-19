@@ -13,14 +13,24 @@ class LoginPage extends Component {
         }
 
         this.login = this.login.bind(this);
-
-        console.log(this.props.users);
     }
     
     login() {
         const { emailInput, pwdInput } = this.state;
+        const { users } = this.props;
 
-        alert(emailInput + " " + pwdInput);
+        // Check if the login is valid (if a user with the same 
+        // email and pwd was found in the users array)
+        const userFound = users.find(user => emailInput === user.email && pwdInput === user.pwd);
+
+        if (userFound) {
+            // If the login is valid: notify App and redirect to "/recipes"
+            alert("found");
+
+        } else {
+            // If the login is not valid: show an error alert
+            alert("not found")
+        }
     }
 
     render() {

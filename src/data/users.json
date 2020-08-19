@@ -2,11 +2,15 @@
     {
         "id": 1,
         "fname": "John",
-        "lname": "Doe"
+        "lname": "Doe",
+        "email": "john@john.com",
+        "pwd": "123"
     },
     {
         "id": 2,
         "fname": "Sara",
-        "lname": "Doe"        
+        "lname": "Doe",        
+        "email": "sara@sara.com",
+        "pwd": "123"
     }
 ]
