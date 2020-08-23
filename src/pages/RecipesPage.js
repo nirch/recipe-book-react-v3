@@ -41,19 +41,35 @@ class RecipesPage extends Component {
 
     handleCreateRecipe() {
         const { nameInput, descInput, imgInput } = this.state;
-        const newRecipe = { 
-            name: nameInput, 
-            desc: descInput, 
-            img: URL.createObjectURL(imgInput) 
-        };
-        
-        this.props.handleNewRecipe(newRecipe);
 
+        // 1) Create Recipe in Parse
+        const Recipe = Parse.Object.extend('Recipe');
+        const newRecipe = new Recipe();
+
+        newRecipe.set('name', nameInput);
+        newRecipe.set('desc', descInput);
+        newRecipe.set('image', new Parse.File(imgInput.name, imgInput));
+        newRecipe.set('ownerId', Parse.User.current());
+
+        newRecipe.save().then(
+            (result) => {
+                // 2) Update state (recipe array) with the new recipe
+                const recipe = new RecipeModel(result);
+                this.setState({
+                    recipes: this.state.recipes.concat(recipe)
+                });
+            },
+            (error) => {
+                console.error('Error while creating Recipe: ', error);
+            }
+        );
+
+        // 3) Close the modal
         this.handleModalClose();
     }
 
     handleFileChange(event) {
-        
+
         if (event.target.files[0]) {
             this.setState({
                 imgInput: event.target.files[0]
@@ -79,8 +95,8 @@ class RecipesPage extends Component {
                     recipes: recipes
                 });
             }, (error) => {
-              console.error('Error while fetching Recipe', error);
-            });    
+                console.error('Error while fetching Recipe', error);
+            });
         }
 
     }
@@ -128,7 +144,7 @@ class RecipesPage extends Component {
                                 </Form.Label>
                                 <Col sm={10}>
                                     {/* the value and name needs to be the same if you want to use a single function for onchange for all inputs */}
-                                    <Form.Control type="text" value={nameInput} name="nameInput" onChange={this.handleInputChange}  />
+                                    <Form.Control type="text" value={nameInput} name="nameInput" onChange={this.handleInputChange} />
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} controlId="desc">
@@ -136,7 +152,7 @@ class RecipesPage extends Component {
                                     Description
                                 </Form.Label>
                                 <Col sm={10}>
-                                    <Form.Control type="text" value={descInput} name="descInput" onChange={this.handleInputChange}  />
+                                    <Form.Control type="text" value={descInput} name="descInput" onChange={this.handleInputChange} />
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} controlId="img">
@@ -144,10 +160,10 @@ class RecipesPage extends Component {
                                     Image
                                 </Form.Label>
                                 <Col sm={10}>
-                                    <Form.Control type="file" accept="image/*" onChange={this.handleFileChange}  />
+                                    <Form.Control type="file" accept="image/*" onChange={this.handleFileChange} />
                                 </Col>
                             </Form.Group>
-                            <Image src={imgURL} className="preview"/>
+                            <Image src={imgURL} className="preview" />
                         </Form>
 
                     </Modal.Body>

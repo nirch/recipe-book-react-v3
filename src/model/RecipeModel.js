@@ -7,6 +7,7 @@ class RecipeModel {
         this.desc = parseRecipe.get("desc");
         this.img = parseRecipe.get("image")._url;
     }
+
 }
 
 export default RecipeModel;
