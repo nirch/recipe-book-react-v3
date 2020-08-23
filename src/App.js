@@ -8,7 +8,13 @@ import LoginPage from './pages/LoginPage';
 import RecipesPage from './pages/RecipesPage';
 import jsonUsers from './data/users.json'
 import jsonRecipes from './data/recipes.json'
+import Parse from 'parse';
 
+Parse.serverURL = 'https://parseapi.back4app.com'; // This is your Server URL
+Parse.initialize(
+  'BMR96akGeFKOOJpJiJq7bc1UwKHzNlm7yuYCWpjj', // This is your Application ID
+  'eIy7FBBSSrQhskgXMcjjceN1B4q9Vrn419VHtoNI', // This is your Javascript key
+);
 
 // State
 // activeUser - object - a User object containing all the details for the active user.
