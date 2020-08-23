@@ -14,13 +14,13 @@ class RecipesPage extends Component {
             showNewRecipeModal: false,
             nameInput: "",
             descInput: "",
-            imgInput: ""
+            imgInput: null
         }
 
         this.handleModalClose = this.handleModalClose.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleCreateRecipe = this.handleCreateRecipe.bind(this);
-
+        this.handleFileChange = this.handleFileChange.bind(this);
 
     }
 
@@ -41,12 +41,25 @@ class RecipesPage extends Component {
         const newRecipe = { 
             name: nameInput, 
             desc: descInput, 
-            img: imgInput 
+            img: URL.createObjectURL(imgInput) 
         };
         
         this.props.handleNewRecipe(newRecipe);
 
         this.handleModalClose();
+    }
+
+    handleFileChange(event) {
+        
+        if (event.target.files[0]) {
+            this.setState({
+                imgInput: event.target.files[0]
+            });
+        } else {
+            this.setState({
+                imgInput: null
+            });
+        }
     }
 
     render() {
@@ -64,6 +77,8 @@ class RecipesPage extends Component {
         const myRecipesUI = myRecipes.map(recipe => <Col key={recipe.id} lg={3} md={4} sm={6}>
             <RecipeCard recipe={recipe} />
         </Col>)
+
+        const imgURL = imgInput ? URL.createObjectURL(imgInput) : "";
 
         return (
             <div className="p-recipes">
@@ -106,13 +121,13 @@ class RecipesPage extends Component {
                             </Form.Group>
                             <Form.Group as={Row} controlId="img">
                                 <Form.Label column sm={2}>
-                                    Image URL
+                                    Image
                                 </Form.Label>
                                 <Col sm={10}>
-                                    <Form.Control type="text" value={imgInput} name="imgInput" onChange={this.handleInputChange}  />
+                                    <Form.Control type="file" accept="image/*" onChange={this.handleFileChange}  />
                                 </Col>
                             </Form.Group>
-                            <Image src={imgInput} className="preview"/>
+                            <Image src={imgURL} className="preview"/>
                         </Form>
 
                     </Modal.Body>
