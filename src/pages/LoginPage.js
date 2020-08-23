@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Form, Col, Row, Button, Alert } from 'react-bootstrap';
 import './LoginPage.css'
 import { Redirect } from 'react-router-dom';
+import Parse from 'parse';
+import UserModel from '../model/UserModel';
 
 class LoginPage extends Component {
 
@@ -20,25 +22,22 @@ class LoginPage extends Component {
     
     login() {
         const { emailInput, pwdInput } = this.state;
-        const { users, handleLogin } = this.props;
+        const {  handleLogin } = this.props;
 
-        // Check if the login is valid (if a user with the same 
-        // email and pwd was found in the users array)
-        const userFound = users.find(user => emailInput === user.email && pwdInput === user.pwd);
 
-        if (userFound) {
+        // Pass the username and password to logIn function
+        Parse.User.logIn(emailInput,pwdInput).then(user => {
             // If the login is valid: notify App and redirect to "/recipes"
-            handleLogin(userFound);
+            handleLogin(new UserModel(user));
             this.setState({
                 redirectToRecipes: true
-            })
-
-        } else {
+            });
+        }).catch(error => {
             // If the login is not valid: show an error alert
             this.setState({
                 showInvalidCredentials: true
             })
-        }
+        });
     }
 
     render() {

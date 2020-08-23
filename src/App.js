@@ -6,7 +6,6 @@ import { Switch, Route, HashRouter } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RecipesPage from './pages/RecipesPage';
-import jsonUsers from './data/users.json'
 import jsonRecipes from './data/recipes.json'
 import Parse from 'parse';
 
@@ -19,8 +18,6 @@ Parse.initialize(
 // State
 // activeUser - object - a User object containing all the details for the active user.
 //  If there is no active user this state will hold the value of null
-// users - array - an array that contains all the users in the system (this is a HACK
-//   since we don't have a server side)
 // recipes - array - an array that contains all the recipes in the system (this is a HACK
 //   since we don't have a server side)
 class App extends React.Component {
@@ -30,7 +27,6 @@ class App extends React.Component {
     
     this.state = {
       activeUser: null,
-      users: jsonUsers,
       recipes: jsonRecipes
     }
 
@@ -69,7 +65,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { activeUser, users, recipes } = this.state;
+    const { activeUser, recipes } = this.state;
 
     return (
       <HashRouter>
@@ -78,7 +74,7 @@ class App extends React.Component {
             <HomePage activeUser={activeUser} handleLogout={this.handleLogout}/>
           </Route>
           <Route exact path="/login">
-            <LoginPage activeUser={activeUser} users={users} handleLogin={this.handleLogin}/>
+            <LoginPage activeUser={activeUser} handleLogin={this.handleLogin}/>
           </Route>
           <Route exact path="/recipes">
             <RecipesPage activeUser={activeUser} recipes={recipes} handleLogout={this.handleLogout} 
