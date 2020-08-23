@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -17,69 +17,34 @@ Parse.initialize(
 // State
 // activeUser - object - a User object containing all the details for the active user.
 //  If there is no active user this state will hold the value of null
-class App extends React.Component {
+function App() {
 
-  constructor(props) {
-    super(props);
-    
-    this.state = {
-      activeUser: null
-    }
+  const [activeUser, setActiveUser] = useState(null);
 
-    this.handleLogout = this.handleLogout.bind(this);
-    this.handleLogin = this.handleLogin.bind(this);
-    this.handleNewRecipe = this.handleNewRecipe.bind(this);
-
-  }
-  
-
-  handleLogin(activeUser) {
-    this.setState({
-      activeUser: activeUser
-    })
+  function handleLogin(activeUser) {
+    setActiveUser(activeUser);
   }
 
-  handleLogout() {
-    this.setState({
-      activeUser: null
-    })
+  function handleLogout() {
+    setActiveUser(null);
   }
 
-  handleNewRecipe(recipe) {
-
-    const { activeUser, recipes } = this.state
-
-    // Adding to the recipe object usedId and id
-    recipe.userId = activeUser.id;
-
-    // for id I am taking the id of the last recipe in the array and adding 1
-    recipe.id = recipes[recipes.length - 1].id + 1;
-
-    this.setState({
-      recipes: recipes.concat(recipe)
-    })
-  }
-
-  render() {
-    const { activeUser } = this.state;
-
-    return (
-      <HashRouter>
-        <Switch>
-          <Route exact path="/">
-            <HomePage activeUser={activeUser} handleLogout={this.handleLogout}/>
-          </Route>
-          <Route exact path="/login">
-            <LoginPage activeUser={activeUser} handleLogin={this.handleLogin}/>
-          </Route>
-          <Route exact path="/recipes">
-            <RecipesPage activeUser={activeUser} handleLogout={this.handleLogout} 
-              handleNewRecipe={this.handleNewRecipe}/>
-          </Route>
-        </Switch>
-      </HashRouter>
-    );
-  }
+  return (
+    <HashRouter>
+      <Switch>
+        <Route exact path="/">
+          <HomePage activeUser={activeUser} handleLogout={handleLogout} />
+        </Route>
+        <Route exact path="/login">
+          <LoginPage activeUser={activeUser} handleLogin={handleLogin} />
+        </Route>
+        <Route exact path="/recipes">
+          <RecipesPage activeUser={activeUser} handleLogout={handleLogout} />
+        </Route>
+      </Switch>
+    </HashRouter>
+  );
 }
+
 
 export default App;

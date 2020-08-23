@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import RecipeNavbar from '../components/RecipeNavbar';
 import { Redirect } from 'react-router-dom';
 import { Container, Col, Row, Button, Modal, Form, Image } from 'react-bootstrap';
@@ -7,40 +7,18 @@ import './RecipePage.css'
 import Parse from 'parse';
 import RecipeModel from "../model/RecipeModel"
 
-class RecipesPage extends Component {
+function RecipesPage(props) {
 
-    constructor(props) {
-        super(props);
+    const [showNewRecipeModal, setShowNewRecipeModal] = useState(false);
+    const [nameInput, setNameInput] = useState("");
+    const [descInput, setDescInput] = useState("");
+    const [imgInput, setImgInput] = useState(null);
+    const [recipes, setRecipes] = useState([]);
 
-        this.state = {
-            showNewRecipeModal: false,
-            nameInput: "",
-            descInput: "",
-            imgInput: null,
-            recipes: []
-        }
 
-        this.handleModalClose = this.handleModalClose.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleCreateRecipe = this.handleCreateRecipe.bind(this);
-        this.handleFileChange = this.handleFileChange.bind(this);
+    const { activeUser, handleLogout } = props;
 
-    }
-
-    handleModalClose() {
-        this.setState({
-            showNewRecipeModal: false
-        })
-    }
-
-    handleInputChange(event) {
-        this.setState({
-            [event.target.name]: event.target.value
-        });
-    }
-
-    handleCreateRecipe() {
-        const { nameInput, descInput, imgInput } = this.state;
+    function handleCreateRecipe() {
 
         // 1) Create Recipe in Parse
         const Recipe = Parse.Object.extend('Recipe');
@@ -55,9 +33,7 @@ class RecipesPage extends Component {
             (result) => {
                 // 2) Update state (recipe array) with the new recipe
                 const recipe = new RecipeModel(result);
-                this.setState({
-                    recipes: this.state.recipes.concat(recipe)
-                });
+                setRecipes(recipes.concat(recipe))
             },
             (error) => {
                 console.error('Error while creating Recipe: ', error);
@@ -65,120 +41,110 @@ class RecipesPage extends Component {
         );
 
         // 3) Close the modal
-        this.handleModalClose();
+        setShowNewRecipeModal(false);
     }
 
-    handleFileChange(event) {
+    function handleFileChange(event) {
 
         if (event.target.files[0]) {
-            this.setState({
-                imgInput: event.target.files[0]
-            });
+            setImgInput(event.target.files[0]);
         } else {
-            this.setState({
-                imgInput: null
-            });
+            setImgInput(null);
         }
     }
 
-    componentDidMount() {
-        // Load active user recipes from Parse
-
-        if (this.props.activeUser) {
+    useEffect(() => {
+        if (activeUser) {
             const Recipe = Parse.Object.extend('Recipe');
             const query = new Parse.Query(Recipe);
             query.equalTo("ownerId", Parse.User.current());
             query.find().then(results => {
                 // Success - results is the array of recipes
                 const recipes = results.map(result => new RecipeModel(result));
-                this.setState({
-                    recipes: recipes
-                });
+                setRecipes(recipes);
             }, (error) => {
                 console.error('Error while fetching Recipe', error);
             });
         }
+    }, [activeUser])
 
+
+
+    if (!activeUser) {
+        return <Redirect to="/" />
     }
 
-    render() {
-        const { activeUser, handleLogout } = this.props;
-        const { showNewRecipeModal, nameInput, descInput, imgInput, recipes } = this.state;
+    // Map my recipes to UI
+    const myRecipesUI = recipes.map(recipe => <Col key={recipe.id} lg={3} md={4} sm={6}>
+        <RecipeCard recipe={recipe} />
+    </Col>)
 
-        if (!activeUser) {
-            return <Redirect to="/" />
-        }
+    const imgURL = imgInput ? URL.createObjectURL(imgInput) : "";
 
-        // Map my recipes to UI
-        const myRecipesUI = recipes.map(recipe => <Col key={recipe.id} lg={3} md={4} sm={6}>
-            <RecipeCard recipe={recipe} />
-        </Col>)
-
-        const imgURL = imgInput ? URL.createObjectURL(imgInput) : "";
-
-        return (
-            <div className="p-recipes">
-                <RecipeNavbar activeUser={activeUser} handleLogout={handleLogout} />
-                <Container>
-                    <div>
-                        <div className="heading">
-                            <h1>{activeUser.fname}'s Recipes</h1>
-                            <Button onClick={() => this.setState({ showNewRecipeModal: true })}>New Recipe</Button>
-                        </div>
-                        <Row>
-                            {myRecipesUI}
-                        </Row>
+    return (
+        <div className="p-recipes">
+            <RecipeNavbar activeUser={activeUser} handleLogout={handleLogout} />
+            <Container>
+                <div>
+                    <div className="heading">
+                        <h1>{activeUser.fname}'s Recipes</h1>
+                        <Button onClick={() => setShowNewRecipeModal(true)}>New Recipe</Button>
                     </div>
-                </Container>
+                    <Row>
+                        {myRecipesUI}
+                    </Row>
+                </div>
+            </Container>
 
 
-                <Modal show={showNewRecipeModal} onHide={this.handleModalClose} size="lg">
-                    <Modal.Header closeButton>
-                        <Modal.Title>New Recipe</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form>
-                            <Form.Group as={Row} controlId="name">
-                                <Form.Label column sm={2}>
-                                    Name
-                                </Form.Label>
-                                <Col sm={10}>
-                                    {/* the value and name needs to be the same if you want to use a single function for onchange for all inputs */}
-                                    <Form.Control type="text" value={nameInput} name="nameInput" onChange={this.handleInputChange} />
-                                </Col>
-                            </Form.Group>
-                            <Form.Group as={Row} controlId="desc">
-                                <Form.Label column sm={2}>
-                                    Description
-                                </Form.Label>
-                                <Col sm={10}>
-                                    <Form.Control type="text" value={descInput} name="descInput" onChange={this.handleInputChange} />
-                                </Col>
-                            </Form.Group>
-                            <Form.Group as={Row} controlId="img">
-                                <Form.Label column sm={2}>
-                                    Image
-                                </Form.Label>
-                                <Col sm={10}>
-                                    <Form.Control type="file" accept="image/*" onChange={this.handleFileChange} />
-                                </Col>
-                            </Form.Group>
-                            <Image src={imgURL} className="preview" />
-                        </Form>
 
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={this.handleModalClose}>
-                            Cancel
+            <Modal show={showNewRecipeModal} onHide={() => setShowNewRecipeModal(false)} size="lg">
+                <Modal.Header closeButton>
+                    <Modal.Title>New Recipe</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group as={Row} controlId="name">
+                            <Form.Label column sm={2}>
+                                Name
+                                </Form.Label>
+                            <Col sm={10}>
+                                {/* the value and name needs to be the same if you want to use a single function for onchange for all inputs */}
+                                <Form.Control type="text" value={nameInput} name="nameInput" onChange={e => setNameInput(e.target.value)} />
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} controlId="desc">
+                            <Form.Label column sm={2}>
+                                Description
+                                </Form.Label>
+                            <Col sm={10}>
+                                <Form.Control type="text" value={descInput} name="descInput" onChange={e => setDescInput(e.target.value)} />
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} controlId="img">
+                            <Form.Label column sm={2}>
+                                Image
+                                </Form.Label>
+                            <Col sm={10}>
+                                <Form.Control type="file" accept="image/*" onChange={handleFileChange} />
+                            </Col>
+                        </Form.Group>
+                        <Image src={imgURL} className="preview" />
+                    </Form>
+
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowNewRecipeModal(false)}>
+                        Cancel
                         </Button>
-                        <Button variant="primary" onClick={this.handleCreateRecipe}>
-                            Create Recipe
+                    <Button variant="primary" onClick={handleCreateRecipe}>
+                        Create Recipe
                         </Button>
-                    </Modal.Footer>
-                </Modal>
-            </div>
-        );
-    }
+                </Modal.Footer>
+            </Modal>
+        </div>
+    );
 }
+
 
 export default RecipesPage;
