@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/recipe-book-react-v3/static/css/main.13ff1ec9.chunk.css",
+    "main.js": "/recipe-book-react-v3/static/js/main.3fb89d90.chunk.js",
+    "main.js.map": "/recipe-book-react-v3/static/js/main.3fb89d90.chunk.js.map",
+    "runtime-main.js": "/recipe-book-react-v3/static/js/runtime-main.aea99989.js",
+    "runtime-main.js.map": "/recipe-book-react-v3/static/js/runtime-main.aea99989.js.map",
+    "static/css/2.11829350.chunk.css": "/recipe-book-react-v3/static/css/2.11829350.chunk.css",
+    "static/js/2.dadbed89.chunk.js": "/recipe-book-react-v3/static/js/2.dadbed89.chunk.js",
+    "static/js/2.dadbed89.chunk.js.map": "/recipe-book-react-v3/static/js/2.dadbed89.chunk.js.map",
+    "index.html": "/recipe-book-react-v3/index.html",
+    "precache-manifest.b7aae9256811fa1aedd70053524b2fe3.js": "/recipe-book-react-v3/precache-manifest.b7aae9256811fa1aedd70053524b2fe3.js",
+    "service-worker.js": "/recipe-book-react-v3/service-worker.js",
+    "static/css/2.11829350.chunk.css.map": "/recipe-book-react-v3/static/css/2.11829350.chunk.css.map",
+    "static/css/main.13ff1ec9.chunk.css.map": "/recipe-book-react-v3/static/css/main.13ff1ec9.chunk.css.map",
+    "static/js/2.dadbed89.chunk.js.LICENSE.txt": "/recipe-book-react-v3/static/js/2.dadbed89.chunk.js.LICENSE.txt",
+    "static/media/logo.svg": "/recipe-book-react-v3/static/media/logo.5d5d9eef.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.aea99989.js",
+    "static/css/2.11829350.chunk.css",
+    "static/js/2.dadbed89.chunk.js",
+    "static/css/main.13ff1ec9.chunk.css",
+    "static/js/main.3fb89d90.chunk.js"
+  ]
+}
