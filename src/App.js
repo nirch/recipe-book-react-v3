@@ -6,7 +6,6 @@ import { Switch, Route, HashRouter } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RecipesPage from './pages/RecipesPage';
-import jsonRecipes from './data/recipes.json'
 import Parse from 'parse';
 
 Parse.serverURL = 'https://parseapi.back4app.com'; // This is your Server URL
@@ -18,16 +17,13 @@ Parse.initialize(
 // State
 // activeUser - object - a User object containing all the details for the active user.
 //  If there is no active user this state will hold the value of null
-// recipes - array - an array that contains all the recipes in the system (this is a HACK
-//   since we don't have a server side)
 class App extends React.Component {
 
   constructor(props) {
     super(props);
     
     this.state = {
-      activeUser: null,
-      recipes: jsonRecipes
+      activeUser: null
     }
 
     this.handleLogout = this.handleLogout.bind(this);
@@ -65,7 +61,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { activeUser, recipes } = this.state;
+    const { activeUser } = this.state;
 
     return (
       <HashRouter>
@@ -77,7 +73,7 @@ class App extends React.Component {
             <LoginPage activeUser={activeUser} handleLogin={this.handleLogin}/>
           </Route>
           <Route exact path="/recipes">
-            <RecipesPage activeUser={activeUser} recipes={recipes} handleLogout={this.handleLogout} 
+            <RecipesPage activeUser={activeUser} handleLogout={this.handleLogout} 
               handleNewRecipe={this.handleNewRecipe}/>
           </Route>
         </Switch>

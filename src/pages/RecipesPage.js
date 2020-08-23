@@ -4,6 +4,8 @@ import { Redirect } from 'react-router-dom';
 import { Container, Col, Row, Button, Modal, Form, Image } from 'react-bootstrap';
 import RecipeCard from '../components/RecipeCard';
 import './RecipePage.css'
+import Parse from 'parse';
+import RecipeModel from "../model/RecipeModel"
 
 class RecipesPage extends Component {
 
@@ -14,7 +16,8 @@ class RecipesPage extends Component {
             showNewRecipeModal: false,
             nameInput: "",
             descInput: "",
-            imgInput: null
+            imgInput: null,
+            recipes: []
         }
 
         this.handleModalClose = this.handleModalClose.bind(this);
@@ -62,19 +65,36 @@ class RecipesPage extends Component {
         }
     }
 
+    componentDidMount() {
+        // Load active user recipes from Parse
+
+        if (this.props.activeUser) {
+            const Recipe = Parse.Object.extend('Recipe');
+            const query = new Parse.Query(Recipe);
+            query.equalTo("ownerId", Parse.User.current());
+            query.find().then(results => {
+                // Success - results is the array of recipes
+                const recipes = results.map(result => new RecipeModel(result));
+                this.setState({
+                    recipes: recipes
+                });
+            }, (error) => {
+              console.error('Error while fetching Recipe', error);
+            });    
+        }
+
+    }
+
     render() {
-        const { activeUser, handleLogout, recipes } = this.props;
-        const { showNewRecipeModal, nameInput, descInput, imgInput } = this.state;
+        const { activeUser, handleLogout } = this.props;
+        const { showNewRecipeModal, nameInput, descInput, imgInput, recipes } = this.state;
 
         if (!activeUser) {
             return <Redirect to="/" />
         }
 
-        // Filter only me recipes
-        const myRecipes = recipes.filter(recipe => recipe.userId === activeUser.id);
-
         // Map my recipes to UI
-        const myRecipesUI = myRecipes.map(recipe => <Col key={recipe.id} lg={3} md={4} sm={6}>
+        const myRecipesUI = recipes.map(recipe => <Col key={recipe.id} lg={3} md={4} sm={6}>
             <RecipeCard recipe={recipe} />
         </Col>)
 
