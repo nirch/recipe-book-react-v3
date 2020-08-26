@@ -81,24 +81,19 @@ class RecipesPage extends Component {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         // Load active user recipes from Parse
 
         if (this.props.activeUser) {
             const Recipe = Parse.Object.extend('Recipe');
             const query = new Parse.Query(Recipe);
             query.equalTo("ownerId", Parse.User.current());
-            query.find().then(results => {
-                // Success - results is the array of recipes
-                const recipes = results.map(result => new RecipeModel(result));
-                this.setState({
-                    recipes: recipes
-                });
-            }, (error) => {
-                console.error('Error while fetching Recipe', error);
+            const results = await query.find();
+            const recipes = results.map(result => new RecipeModel(result));
+            this.setState({
+                recipes: recipes
             });
         }
-
     }
 
     render() {
