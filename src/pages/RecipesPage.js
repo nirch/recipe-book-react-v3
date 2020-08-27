@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { Container, Col, Row, Button, Modal, Form, Image } from 'react-bootstrap';
 import RecipeCard from '../components/RecipeCard';
 import './RecipePage.css'
+import emailjs from 'emailjs-com'
 
 class RecipesPage extends Component {
 
@@ -47,6 +48,19 @@ class RecipesPage extends Component {
         this.props.handleNewRecipe(newRecipe);
 
         this.handleModalClose();
+
+        // send an email
+        var template_params = {
+            "to_email": this.props.activeUser.email,
+            "recipe_name": nameInput,
+            "fname": this.props.activeUser.fname,
+            "lname": this.props.activeUser.lname,
+            "recipe_desc": descInput
+         }
+         
+         var service_id = "default_service";
+         var template_id = "new_recipe";
+         emailjs.send(service_id, template_id, template_params);
     }
 
     handleFileChange(event) {

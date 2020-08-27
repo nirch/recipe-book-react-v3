@@ -8,7 +8,10 @@ import LoginPage from './pages/LoginPage';
 import RecipesPage from './pages/RecipesPage';
 import jsonUsers from './data/users.json'
 import jsonRecipes from './data/recipes.json'
+import emailjs from 'emailjs-com'
 
+
+emailjs.init("user_mOgwm2ggIzsyuhMsYmh9z");
 
 // State
 // activeUser - object - a User object containing all the details for the active user.
