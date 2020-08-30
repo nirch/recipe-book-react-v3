@@ -5,6 +5,7 @@ import { Container, Col, Row, Button, Modal, Form, Image } from 'react-bootstrap
 import RecipeCard from '../components/RecipeCard';
 import './RecipePage.css'
 import emailjs from 'emailjs-com'
+import { Pie } from 'react-chartjs-2';
 
 class RecipesPage extends Component {
 
@@ -94,6 +95,27 @@ class RecipesPage extends Component {
 
         const imgURL = imgInput ? URL.createObjectURL(imgInput) : "";
 
+        const chartData = {
+            labels: [
+                'Red',
+                'Blue',
+                'Yellow'
+            ],
+            datasets: [{
+                data: [300, 50, 100],
+                backgroundColor: [
+                '#FF6384',
+                '#36A2EB',
+                '#FFCE56'
+                ],
+                hoverBackgroundColor: [
+                '#FF6384',
+                '#36A2EB',
+                '#FFCE56'
+                ]
+            }]
+        };
+
         return (
             <div className="p-recipes">
                 <RecipeNavbar activeUser={activeUser} handleLogout={handleLogout} />
@@ -106,6 +128,7 @@ class RecipesPage extends Component {
                         <Row>
                             {myRecipesUI}
                         </Row>
+                        <Pie data={chartData} width={500}/>
                     </div>
                 </Container>
 
