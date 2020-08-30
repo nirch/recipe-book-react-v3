@@ -4,27 +4,31 @@
         "name": "Shakshuka",
         "desc": "Eggs dish with tomato sauce",
         "img": "https://cdn.apartmenttherapy.info/image/upload/v1561143359/k/Photo/Recipes/2019-07-how-to-shakshuka/How-To-Make-Shakshuka_034.jpg",
-        "userId": 1
+        "userId": 1,
+        "difficulty": 1
     },
     {
         "id": 2,
         "name": "Shnitzel",
         "desc": "Children dish",
         "img": "https://www.thespruceeats.com/thmb/VYxi1MPOLh3W286dhp270ozcjrY=/960x0/filters:no_upscale():max_bytes(150000):strip_icc()/wiener-schnitzel-recipe-1447089-Hero-5b587d6c46e0fb0071b0059d.jpg",
-        "userId": 1
+        "userId": 1,
+        "difficulty": 2
     },
     {
         "id": 3,
         "name": "Spicy Shakshuka",
         "desc": "Eggs dish with tomato sauce",
         "img": "https://cdn.apartmenttherapy.info/image/upload/v1561143359/k/Photo/Recipes/2019-07-how-to-shakshuka/How-To-Make-Shakshuka_034.jpg",
-        "userId": 2
+        "userId": 2,
+        "difficulty": 1
     },
     {
         "id": 4,
         "name": "Spicy Shnitzel",
         "desc": "Children dish",
         "img": "https://www.thespruceeats.com/thmb/VYxi1MPOLh3W286dhp270ozcjrY=/960x0/filters:no_upscale():max_bytes(150000):strip_icc()/wiener-schnitzel-recipe-1447089-Hero-5b587d6c46e0fb0071b0059d.jpg",
-        "userId": 2
+        "userId": 2,
+        "difficulty": 2
     }
 ]

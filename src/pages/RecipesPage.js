@@ -95,23 +95,30 @@ class RecipesPage extends Component {
 
         const imgURL = imgInput ? URL.createObjectURL(imgInput) : "";
 
+        let easyRecipes = 0;
+        let hardRecipes = 0;
+        myRecipes.forEach(recipe => {
+            if (recipe.difficulty === 1) {
+                easyRecipes++;
+            } else {
+                hardRecipes++;
+            }
+        });
+
         const chartData = {
             labels: [
-                'Red',
-                'Blue',
-                'Yellow'
+                'Easy',
+                'Hard'
             ],
             datasets: [{
-                data: [300, 50, 100],
+                data: [easyRecipes, hardRecipes],
                 backgroundColor: [
                 '#FF6384',
-                '#36A2EB',
-                '#FFCE56'
+                '#36A2EB'
                 ],
                 hoverBackgroundColor: [
                 '#FF6384',
-                '#36A2EB',
-                '#FFCE56'
+                '#36A2EB'
                 ]
             }]
         };
