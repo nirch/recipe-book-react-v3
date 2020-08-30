@@ -16,13 +16,15 @@ class RecipesPage extends Component {
             showNewRecipeModal: false,
             nameInput: "",
             descInput: "",
-            imgInput: null
+            imgInput: null,
+            difficultyInput: 1
         }
 
         this.handleModalClose = this.handleModalClose.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleCreateRecipe = this.handleCreateRecipe.bind(this);
         this.handleFileChange = this.handleFileChange.bind(this);
+        this.cleanModalData = this.cleanModalData.bind(this);
 
     }
 
@@ -38,17 +40,29 @@ class RecipesPage extends Component {
         });
     }
 
+    cleanModalData() {
+        this.setState({
+            nameInput: "",
+            descInput: "",
+            imgInput: null,
+            difficultyInput: 1
+        })
+    }
+
     handleCreateRecipe() {
-        const { nameInput, descInput, imgInput } = this.state;
-        const newRecipe = { 
-            name: nameInput, 
-            desc: descInput, 
-            img: URL.createObjectURL(imgInput) 
+        const { nameInput, descInput, imgInput, difficultyInput } = this.state;
+        const newRecipe = {
+            name: nameInput,
+            desc: descInput,
+            img: URL.createObjectURL(imgInput),
+            difficulty: difficultyInput
         };
-        
+
         this.props.handleNewRecipe(newRecipe);
 
         this.handleModalClose();
+
+        this.cleanModalData();
 
         // send an email
         var template_params = {
@@ -57,15 +71,15 @@ class RecipesPage extends Component {
             "fname": this.props.activeUser.fname,
             "lname": this.props.activeUser.lname,
             "recipe_desc": descInput
-         }
-         
-         var service_id = "default_service";
-         var template_id = "new_recipe";
-         emailjs.send(service_id, template_id, template_params);
+        }
+
+        var service_id = "default_service";
+        var template_id = "new_recipe";
+        emailjs.send(service_id, template_id, template_params);
     }
 
     handleFileChange(event) {
-        
+
         if (event.target.files[0]) {
             this.setState({
                 imgInput: event.target.files[0]
@@ -79,7 +93,7 @@ class RecipesPage extends Component {
 
     render() {
         const { activeUser, handleLogout, recipes } = this.props;
-        const { showNewRecipeModal, nameInput, descInput, imgInput } = this.state;
+        const { showNewRecipeModal, nameInput, descInput, imgInput, difficultyInput } = this.state;
 
         if (!activeUser) {
             return <Redirect to="/" />
@@ -98,7 +112,7 @@ class RecipesPage extends Component {
         let easyRecipes = 0;
         let hardRecipes = 0;
         myRecipes.forEach(recipe => {
-            if (recipe.difficulty === 1) {
+            if (recipe.difficulty == 1) {
                 easyRecipes++;
             } else {
                 hardRecipes++;
@@ -113,12 +127,12 @@ class RecipesPage extends Component {
             datasets: [{
                 data: [easyRecipes, hardRecipes],
                 backgroundColor: [
-                '#FF6384',
-                '#36A2EB'
+                    '#FF6384',
+                    '#36A2EB'
                 ],
                 hoverBackgroundColor: [
-                '#FF6384',
-                '#36A2EB'
+                    '#FF6384',
+                    '#36A2EB'
                 ]
             }]
         };
@@ -135,7 +149,7 @@ class RecipesPage extends Component {
                         <Row>
                             {myRecipesUI}
                         </Row>
-                        <Pie data={chartData} width={500}/>
+                        <Pie data={chartData} width={500} />
                     </div>
                 </Container>
 
@@ -152,7 +166,7 @@ class RecipesPage extends Component {
                                 </Form.Label>
                                 <Col sm={10}>
                                     {/* the value and name needs to be the same if you want to use a single function for onchange for all inputs */}
-                                    <Form.Control type="text" value={nameInput} name="nameInput" onChange={this.handleInputChange}  />
+                                    <Form.Control type="text" value={nameInput} name="nameInput" onChange={this.handleInputChange} />
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} controlId="desc">
@@ -160,7 +174,18 @@ class RecipesPage extends Component {
                                     Description
                                 </Form.Label>
                                 <Col sm={10}>
-                                    <Form.Control type="text" value={descInput} name="descInput" onChange={this.handleInputChange}  />
+                                    <Form.Control type="text" value={descInput} name="descInput" onChange={this.handleInputChange} />
+                                </Col>
+                            </Form.Group>
+                            <Form.Group as={Row} controlId="difficulty">
+                                <Form.Label column sm={2}>
+                                    Difficulty
+                                </Form.Label>
+                                <Col sm={10}>
+                                    <Form.Control as="select" value={difficultyInput} onChange={e => this.setState({difficultyInput: e.target.value})}>
+                                        <option value="1">Easy</option>
+                                        <option value="2">Hard</option>
+                                    </Form.Control>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} controlId="img">
@@ -168,10 +193,10 @@ class RecipesPage extends Component {
                                     Image
                                 </Form.Label>
                                 <Col sm={10}>
-                                    <Form.Control type="file" accept="image/*" onChange={this.handleFileChange}  />
+                                    <Form.Control type="file" accept="image/*" onChange={this.handleFileChange} />
                                 </Col>
                             </Form.Group>
-                            <Image src={imgURL} className="preview"/>
+                            <Image src={imgURL} className="preview" />
                         </Form>
 
                     </Modal.Body>
