@@ -12,12 +12,15 @@ class RecipesPage extends Component {
     constructor(props) {
         super(props);
 
+        this.interval = null;
+
         this.state = {
             showNewRecipeModal: false,
             nameInput: "",
             descInput: "",
             imgInput: null,
-            difficultyInput: 1
+            difficultyInput: 1,
+            animateIndex: 0
         }
 
         this.handleModalClose = this.handleModalClose.bind(this);
@@ -26,6 +29,18 @@ class RecipesPage extends Component {
         this.handleFileChange = this.handleFileChange.bind(this);
         this.cleanModalData = this.cleanModalData.bind(this);
 
+    }
+
+    componentDidMount() {
+        this.interval = setInterval(() => {
+            if (this.state.animateIndex > this.props.recipes.length) {
+                clearInterval(this.interval);
+            } else {
+                this.setState({
+                    animateIndex: this.state.animateIndex + 1
+                })    
+            }
+        }, 3000)
     }
 
     handleModalClose() {
@@ -93,7 +108,7 @@ class RecipesPage extends Component {
 
     render() {
         const { activeUser, handleLogout, recipes } = this.props;
-        const { showNewRecipeModal, nameInput, descInput, imgInput, difficultyInput } = this.state;
+        const { showNewRecipeModal, nameInput, descInput, imgInput, difficultyInput, animateIndex } = this.state;
 
         if (!activeUser) {
             return <Redirect to="/" />
@@ -103,8 +118,8 @@ class RecipesPage extends Component {
         const myRecipes = recipes.filter(recipe => recipe.userId === activeUser.id);
 
         // Map my recipes to UI
-        const myRecipesUI = myRecipes.map(recipe => <Col key={recipe.id} lg={3} md={4} sm={6}>
-            <RecipeCard recipe={recipe} />
+        const myRecipesUI = myRecipes.map((recipe, index) => <Col key={recipe.id} lg={3} md={4} sm={6}>
+            <RecipeCard recipe={recipe} animate={animateIndex === index} />
         </Col>)
 
         const imgURL = imgInput ? URL.createObjectURL(imgInput) : "";
