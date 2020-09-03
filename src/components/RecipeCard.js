@@ -14,7 +14,7 @@ class RecipeCard extends Component {
         const { recipe } = this.props;
 
         return (
-            <Card className="c-recipe-card">
+            <Card className="c-recipe-card animate">
                 <Card.Img variant="top" src={recipe.img} />
                 <Card.Body>
                     <Card.Title>{recipe.name}</Card.Title>

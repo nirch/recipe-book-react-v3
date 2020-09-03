@@ -9,3 +9,17 @@ img.preview {
     width: 50%;
     margin: auto;
 }
+
+@keyframes falldown {
+    from {
+        transform: translate(0, -100vh);
+    }
+
+    to {
+        transform: translate(0, 0);
+    }
+}
+
+.animate {
+    animation: falldown 3s;
+}
