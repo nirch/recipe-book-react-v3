@@ -6,6 +6,8 @@ import RecipeCard from '../components/RecipeCard';
 import './RecipePage.css'
 import Parse from 'parse';
 import RecipeModel from "../model/RecipeModel"
+import { useContext } from 'react';
+import ActiveUserContext from '../context/ActiveUserContext';
 
 function RecipesPage(props) {
 
@@ -16,7 +18,9 @@ function RecipesPage(props) {
     const [recipes, setRecipes] = useState([]);
 
 
-    const { activeUser, handleLogout } = props;
+    const { handleLogout } = props;
+
+    const activeUser = useContext(ActiveUserContext);
 
     function handleCreateRecipe() {
 
@@ -83,7 +87,7 @@ function RecipesPage(props) {
 
     return (
         <div className="p-recipes">
-            <RecipeNavbar activeUser={activeUser} handleLogout={handleLogout} />
+            <RecipeNavbar handleLogout={handleLogout} />
             <Container>
                 <div>
                     <div className="heading">

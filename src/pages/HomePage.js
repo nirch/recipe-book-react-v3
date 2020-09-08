@@ -4,11 +4,11 @@ import RecipeNavbar from '../components/RecipeNavbar';
 
 
 function HomePage(props) {
-    const { activeUser, handleLogout } = props;
+    const { handleLogout } = props;
 
     return (
         <div>
-            <RecipeNavbar activeUser={activeUser} handleLogout={handleLogout} />
+            <RecipeNavbar handleLogout={handleLogout} />
             <Jumbotron>
                 <Container>
                     <h1>Recipe Book</h1>

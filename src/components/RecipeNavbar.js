@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
+import { useContext } from 'react';
+import ActiveUserContext from '../context/ActiveUserContext';
 
 function RecipeNavbar(props) {
 
-    const { activeUser, handleLogout } = props;
+    const { handleLogout } = props;
+    const activeUser = useContext(ActiveUserContext);
 
     // rendering the menu items depending on whether we have an active user or not
     const recipesMenuItem = activeUser ? <Nav.Link href="#/recipes">Recipes</Nav.Link> : null;

@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RecipesPage from './pages/RecipesPage';
 import Parse from 'parse';
+import ActiveUserContext from './context/ActiveUserContext';
 
 Parse.serverURL = 'https://parseapi.back4app.com'; // This is your Server URL
 Parse.initialize(
@@ -30,19 +31,21 @@ function App() {
   }
 
   return (
-    <HashRouter>
-      <Switch>
-        <Route exact path="/">
-          <HomePage activeUser={activeUser} handleLogout={handleLogout} />
-        </Route>
-        <Route exact path="/login">
-          <LoginPage activeUser={activeUser} handleLogin={handleLogin} />
-        </Route>
-        <Route exact path="/recipes">
-          <RecipesPage activeUser={activeUser} handleLogout={handleLogout} />
-        </Route>
-      </Switch>
-    </HashRouter>
+    <ActiveUserContext.Provider value={activeUser}>
+      <HashRouter>
+        <Switch>
+          <Route exact path="/">
+            <HomePage handleLogout={handleLogout} />
+          </Route>
+          <Route exact path="/login">
+            <LoginPage handleLogin={handleLogin} />
+          </Route>
+          <Route exact path="/recipes">
+            <RecipesPage handleLogout={handleLogout} />
+          </Route>
+        </Switch>
+      </HashRouter>
+    </ActiveUserContext.Provider>
   );
 }
 
